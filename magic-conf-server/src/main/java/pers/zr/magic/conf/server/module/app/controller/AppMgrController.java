@@ -33,7 +33,6 @@ public class AppMgrController {
     @RequestMapping(value = "/list")
     public CommonDataResponse<List<AppPo>> test() {
 
-        Long start = System.currentTimeMillis();
         CommonDataResponse<List<AppPo>> response = new CommonDataResponse<>();
         try{
             response.setData(appMgrService.getAppList());
@@ -44,8 +43,6 @@ public class AppMgrController {
             response.setMessage("Failed to get app list: service internal error!");
             log.error("Fail to get app list", e);
         }
-        long end = System.currentTimeMillis();
-        log.info("costs " + (end-start) + " ms");
         return  response;
     }
 
