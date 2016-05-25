@@ -10,13 +10,13 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="pers.zr.magic.conf.server.module" />
+    <context:component-scan base-package="pers.zr.opensource.magic.conf.server.web" />
 
-    <bean id="logAop" class="pers.zr.magic.conf.server.log.LogAop"></bean>
+    <bean id="apiLogAop" class="pers.zr.opensource.magic.conf.server.log.ApiLogAop"></bean>
     <aop:config>
-        <aop:aspect ref="logAop">
+        <aop:aspect ref="apiLogAop">
             <aop:around method="doMonitor"
-                        pointcut="execution(* pers.zr.magic.conf.server..*Controller*.*(..))" />
+                        pointcut="execution(* pers.zr.opensource.magic.conf.server..*Controller*.*(..))" />
         </aop:aspect>
     </aop:config>
 

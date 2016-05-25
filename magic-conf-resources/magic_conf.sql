@@ -1,34 +1,41 @@
-/*
-Source Database       : magic_conf
 
-Date: 2016-05-03 15:02:20
-*/
+CREATE DATABASE `magic_conf` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-SET FOREIGN_KEY_CHECKS=0;
+use magic_conf;
+
+-- ----------------------------
+-- Table structure for conn_test
+-- ----------------------------
+DROP TABLE IF EXISTS `conn_test`;
+CREATE TABLE `conn_test` (
+  `a` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for mc_app
 -- ----------------------------
 DROP TABLE IF EXISTS `mc_app`;
 CREATE TABLE `mc_app` (
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
-  `app_name` varchar(100) NOT NULL DEFAULT '' COMMENT '应用名称',
-  `app_desc` varchar(500) NOT NULL DEFAULT '' COMMENT '应用描述',
+  `app_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '应用ID',
+  `app_code` varchar(100) NOT NULL DEFAULT '' COMMENT '应用代号',
+  `app_name` varchar(200) NOT NULL DEFAULT '' COMMENT '应用名称',
   `group_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '分组id',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用表';
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8 COMMENT='应用表';
 
 -- ----------------------------
 -- Table structure for mc_app_version
 -- ----------------------------
 DROP TABLE IF EXISTS `mc_app_version`;
 CREATE TABLE `mc_app_version` (
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
-  `app_version` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
-  PRIMARY KEY (`app_id`,`app_version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
+  `version_no` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `udx_version` (`app_id`,`version_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用版本表';
 
 -- ----------------------------
 -- Table structure for mc_config_file
@@ -38,7 +45,7 @@ CREATE TABLE `mc_config_file` (
   `config_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
   `file_content` text NOT NULL COMMENT '文件内容',
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
   `app_version` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
   `profile_id` varchar(50) NOT NULL DEFAULT '' COMMENT '环境ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -52,18 +59,16 @@ CREATE TABLE `mc_config_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `mc_config_file_his`;
 CREATE TABLE `mc_config_file_his` (
-  `id` bigint(20) NOT NULL,
   `config_id` bigint(20) NOT NULL,
   `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
-  `file_content_new` text NOT NULL COMMENT '文件内容(新）',
-  `file_content_old` text NOT NULL COMMENT '文件内容（旧）',
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
+  `file_content` text NOT NULL COMMENT '文件内容(新）',
+  `file_content_last` text NOT NULL COMMENT '文件内容（旧）',
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
   `app_version` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
   `profile_id` varchar(50) NOT NULL DEFAULT '' COMMENT '环境ID',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_user` varchar(100) NOT NULL DEFAULT '' COMMENT '创建用户',
-  PRIMARY KEY (`id`),
-  KEY `idx_config_id` (`config_id`)
+  PRIMARY KEY (`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用配置文件历史表';
 
 -- ----------------------------
@@ -74,7 +79,7 @@ CREATE TABLE `mc_config_item` (
   `config_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `item_key` varchar(200) NOT NULL DEFAULT '' COMMENT '配置项KEY',
   `item_value` varchar(1024) NOT NULL DEFAULT '' COMMENT '配置项值',
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
   `app_version` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
   `profile_id` varchar(50) NOT NULL COMMENT '环境ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -88,18 +93,16 @@ CREATE TABLE `mc_config_item` (
 -- ----------------------------
 DROP TABLE IF EXISTS `mc_config_item_his`;
 CREATE TABLE `mc_config_item_his` (
-  `id` bigint(20) NOT NULL,
   `config_id` bigint(20) NOT NULL,
   `item_key` varchar(200) NOT NULL DEFAULT '' COMMENT '配置项KEY',
-  `item_value_new` varchar(1024) NOT NULL DEFAULT '' COMMENT '配置项值(新）',
-  `item_value_old` varchar(1024) NOT NULL DEFAULT '' COMMENT '配置项值（旧）',
-  `app_id` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
+  `item_value` varchar(1024) NOT NULL DEFAULT '' COMMENT '配置项值(新）',
+  `item_value_last` varchar(1024) NOT NULL DEFAULT '' COMMENT '配置项值（旧）',
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
   `app_version` varchar(10) NOT NULL DEFAULT '' COMMENT '应用版本号',
   `profile_id` varchar(50) NOT NULL COMMENT '环境ID',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `create_user` varchar(100) NOT NULL DEFAULT '' COMMENT '创建用户',
-  PRIMARY KEY (`id`),
-  KEY `idx_config_Id` (`config_id`)
+  PRIMARY KEY (`config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用配置项历史表';
 
 -- ----------------------------
@@ -141,15 +144,16 @@ CREATE TABLE `mc_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
--- Table structure for mc_role_rw_ctrl
+-- Table structure for mc_role_permission
 -- ----------------------------
-DROP TABLE IF EXISTS `mc_role_rw_ctrl`;
-CREATE TABLE `mc_role_rw_ctrl` (
+DROP TABLE IF EXISTS `mc_role_permission`;
+CREATE TABLE `mc_role_permission` (
+  `id` bigint(20) NOT NULL,
   `role_id` varchar(100) NOT NULL DEFAULT '' COMMENT '角色ID',
   `profile_id` varchar(50) NOT NULL DEFAULT '' COMMENT '环境ID',
   `read_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '当前角色在对该环境的配置是否可读：0-否 1-是',
   `write_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '当前角色在对该环境的配置是否可写 0-否 1-是',
-  PRIMARY KEY (`role_id`,`profile_id`)
+  UNIQUE KEY `udx_permission` (`role_id`,`profile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色对环境读写权限表';
 
 -- ----------------------------
@@ -176,8 +180,10 @@ CREATE TABLE `mc_user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `mc_user_role`;
 CREATE TABLE `mc_user_role` (
-  `user_id` bigint(20) NOT NULL,
-  `app_id` varchar(50) NOT NULL,
-  `role_id` varchar(100) NOT NULL,
-  PRIMARY KEY (`user_id`,`app_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `app_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '应用ID',
+  `role_id` varchar(100) NOT NULL DEFAULT '' COMMENT '角色ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `udx_user_role` (`user_id`,`app_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';

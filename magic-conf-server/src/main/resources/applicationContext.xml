@@ -18,7 +18,7 @@
 		</property>
 	</bean>
 
-	<context:component-scan base-package="pers.zr.magic.conf.server.module" />
+	<context:component-scan base-package="pers.zr.opensource.magic.conf.server.module" />
 
 	<bean id="masterDs" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="user" value="${mysql.username}" />
@@ -41,11 +41,26 @@
 		<property name="maxStatementsPerConnection" value="${mysql.maxStatementsPerConnection}" />
 	</bean>
 
-	<bean id="magicDataSource" class="pers.zr.magic.dao.MagicSingleDataSource" >
+	<bean id="magicDataSource" class="pers.zr.opensource.magic.dao.MagicSingleDataSource" >
 		<property name="dataSource" ref="masterDs" />
 	</bean>
 
-	<bean id="appDao" class="pers.zr.magic.conf.server.module.app.dao.impl.AppDaoImpl" >
+
+	<!-- Dao beans-->
+
+	<bean id="appDao" class="pers.zr.opensource.magic.conf.server.module.app.dao.impl.AppDaoImpl" >
+		<property name="magicDataSource" ref="magicDataSource" />
+	</bean>
+
+	<bean id="appVersionDao" class="pers.zr.opensource.magic.conf.server.module.app.dao.impl.AppVersionDaoImpl" >
+		<property name="magicDataSource" ref="magicDataSource" />
+	</bean>
+
+	<bean id="profileDao" class="pers.zr.opensource.magic.conf.server.module.profile.dao.impl.ProfileDaoImpl" >
+		<property name="magicDataSource" ref="magicDataSource" />
+	</bean>
+
+	<bean id="groupDao" class="pers.zr.opensource.magic.conf.server.module.group.dao.impl.GroupDaoImpl" >
 		<property name="magicDataSource" ref="magicDataSource" />
 	</bean>
 
