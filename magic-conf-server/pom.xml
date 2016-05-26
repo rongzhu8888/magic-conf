@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>magic-conf</artifactId>
-        <groupId>pers.zr.opensource</groupId>
+        <groupId>com.github.rongzhu8888</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,14 +15,14 @@
     <dependencies>
         <!-- 内部依赖-->
         <dependency>
-            <groupId>pers.zr.opensource</groupId>
+            <groupId>com.github.rongzhu8888</groupId>
             <artifactId>magic-conf-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 第三方组件依赖管理 -->
         <dependency>
-            <groupId>pers.zr.opensource</groupId>
+            <groupId>com.github.rongzhu8888</groupId>
             <artifactId>magic-dao</artifactId>
         </dependency>
         <dependency>
@@ -41,7 +41,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-        <dependency>
+      <!--  <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
