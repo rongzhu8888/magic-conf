@@ -1,7 +1,7 @@
 package pers.zr.opensource.magic.conf.server.web.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AppMgrController {
 
-    private final Logger log = LogManager.getLogger(AppMgrController.class);
+    private final Log log = LogFactory.getLog(AppMgrController.class);
 
     @Autowired
     private IAppMgrService appMgrService;

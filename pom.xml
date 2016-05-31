@@ -16,8 +16,6 @@
 
     <properties>
         <junit_version>4.12</junit_version>
-        <log4j_version>2.5</log4j_version>
-
         <servlet_version>3.1.0</servlet_version>
         <javax_validation_version>1.1.0.Final</javax_validation_version>
         <hibernate_validation_version>5.1.2.Final</hibernate_validation_version>
@@ -31,7 +29,7 @@
         <httpclient_version>4.5.1</httpclient_version>
         <curator.version>2.9.1</curator.version>
         <jackson.version>2.6.5</jackson.version>
-        <magic.dao.version>1.0.0</magic.dao.version>
+        <magic.dao.version>1.0.1</magic.dao.version>
 
         <maven.plugin.compiler.version>3.3</maven.plugin.compiler.version>
 
@@ -46,12 +44,6 @@
             <version>${junit_version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j_version}</version>
-        </dependency>
-
     </dependencies>
 
     <dependencyManagement>

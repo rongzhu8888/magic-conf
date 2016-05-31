@@ -1,7 +1,7 @@
 package pers.zr.opensource.magic.conf.server.web.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +24,7 @@ public class MenuController {
     @Autowired
     private IMenuService menuService;
 
-    private Logger log = LogManager.getLogger(MenuController.class);
+    private final Log log = LogFactory.getLog(MenuController.class);
 
     //顶部应用菜单
 

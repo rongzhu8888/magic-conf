@@ -5,8 +5,8 @@ package pers.zr.opensource.magic.conf.server.web.controller;
  */
 
 import com.google.common.collect.Lists;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class ProfileMgrController {
     @Autowired
     private IProfileMgrService profileMgrService;
 
-    private final Logger log = LogManager.getLogger(ProfileMgrController.class);
+    private final Log log = LogFactory.getLog(ProfileMgrController.class);
 
     @RequestMapping(value = "/profiles", method = RequestMethod.POST)
     public CommonResponse createProfile(@NotNull @RequestBody ProfileReqVo profileReqVo) {

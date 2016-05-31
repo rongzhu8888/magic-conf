@@ -1,8 +1,8 @@
 package pers.zr.opensource.magic.conf.server.log;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 
 public class ApiLogAop {
 
-    private Logger log = LogManager.getLogger(ApiLogAop.class);
+    private final Log log = LogFactory.getLog(ApiLogAop.class);
 
     public Object doMonitor(ProceedingJoinPoint pjp) {
         StringBuffer className = new StringBuffer(" ");
