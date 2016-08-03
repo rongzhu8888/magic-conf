@@ -9,6 +9,8 @@ import pers.zr.opensource.magic.conf.server.module.profile.ProfileNotExistExcept
 import pers.zr.opensource.magic.conf.server.module.profile.dao.ProfileDao;
 import pers.zr.opensource.magic.conf.server.module.profile.dao.po.ProfilePo;
 import pers.zr.opensource.magic.conf.server.module.profile.service.IProfileMgrService;
+import pers.zr.opensource.magic.dao.annotation.QueryDataSource;
+import pers.zr.opensource.magic.dao.constants.DataSourceType;
 import pers.zr.opensource.magic.dao.constants.OrderType;
 import pers.zr.opensource.magic.dao.order.Order;
 
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by zhurong on 2016-5-24.
  */
-
+@QueryDataSource(alias = "slave01", type = DataSourceType.MASTER)
 @Component
 public class ProfileMgrServiceImpl implements IProfileMgrService {
 
@@ -52,7 +54,13 @@ public class ProfileMgrServiceImpl implements IProfileMgrService {
         profileDao.delete(profileId);
     }
 
+    @Override
+//    @QueryDataSource(alias = "slave02", type = DataSourceType.MASTER)
+    public ProfilePo getProfile(String profileId) {
+        return profileDao.get(profileId);
+    }
 
+//    @QueryDataSource(alias = "slave02", type = DataSourceType.MASTER)
     @Override
     public List<ProfilePo> getProfileList() {
 

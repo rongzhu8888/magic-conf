@@ -3,6 +3,7 @@ package pers.zr.opensource.magic.conf.server.module.profile.dao.po;
 import pers.zr.opensource.magic.dao.annotation.Column;
 import pers.zr.opensource.magic.dao.annotation.Key;
 import pers.zr.opensource.magic.dao.annotation.Table;
+import pers.zr.opensource.magic.dao.annotation.TableShard;
 
 import java.io.Serializable;
 import java.util.Date;

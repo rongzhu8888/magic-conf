@@ -117,6 +117,21 @@ public class ProfileMgrController {
         return response;
     }
 
+    @RequestMapping(value = "/profiles/{profileId}", method = RequestMethod.GET)
+    public CommonDataResponse<ProfileResVo> getProfile(@NotNull @PathVariable String profileId) {
+        CommonResponse validateRes = ParamValidator.validate(profileId);
+        if(validateRes != null) {
+            return CommonDataResponse.buildErrorResponse(validateRes.getCode(), validateRes.getMessage());
+        }
+
+        try{
+            ProfilePo profilePo = profileMgrService.getProfile(profileId);
+            return CommonDataResponse.buildSuccessResponse(convert2Vo(profilePo));
+        }catch (Exception e) {
+            log.error("Failed to get profile list", e);//程序内部错误输出error级别异常
+            return CommonDataResponse.buildErrorResponse(CommonResponseCode.SERVER_ERROR, "Failed to get profile, caused by service internal error!");
+        }
+    }
 
 
     private ProfileResVo convert2Vo(ProfilePo profilePo) {

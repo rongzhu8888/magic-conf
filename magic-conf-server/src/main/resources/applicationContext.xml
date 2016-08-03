@@ -21,10 +21,10 @@
 	<context:component-scan base-package="pers.zr.opensource.magic.conf.server.module" />
 
 	<bean id="masterDs" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="user" value="${mysql.username}" />
-		<property name="password" value="${mysql.password}" />
+		<property name="jdbcUrl" value="${master.mysql.url}" />
+		<property name="user" value="${master.mysql.username}" />
+		<property name="password" value="${master.mysql.password}" />
 		<property name="driverClass" value="${mysql.driver_class}" />
-		<property name="jdbcUrl" value="${mysql.url}" />
 		<property name="maxPoolSize" value="${mysql.maxPoolSize}" />
 		<property name="minPoolSize" value="${mysql.minPoolSize}" />
 		<property name="initialPoolSize" value="${mysql.initialPoolSize}" />
@@ -41,9 +41,67 @@
 		<property name="maxStatementsPerConnection" value="${mysql.maxStatementsPerConnection}" />
 	</bean>
 
-	<bean id="magicDataSource" class="pers.zr.opensource.magic.dao.MagicSingleDataSource" >
-		<property name="dataSource" ref="masterDs" />
+
+	<bean id="slave01Ds" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${slave01.mysql.url}" />
+		<property name="user" value="${slave01.mysql.username}" />
+		<property name="password" value="${slave01.mysql.password}" />
+		<property name="driverClass" value="${mysql.driver_class}" />
+		<property name="maxPoolSize" value="${mysql.maxPoolSize}" />
+		<property name="minPoolSize" value="${mysql.minPoolSize}" />
+		<property name="initialPoolSize" value="${mysql.initialPoolSize}" />
+		<property name="maxIdleTime" value="${mysql.maxIdleTime}" />
+		<property name="checkoutTimeout" value="${mysql.checkoutTimeout}" />
+		<property name="acquireIncrement" value="${mysql.acquireIncrement}" />
+		<property name="acquireRetryAttempts" value="${mysql.acquireRetryAttempts}" />
+		<property name="acquireRetryDelay" value="${mysql.acquireRetryDelay}" />
+		<property name="autoCommitOnClose" value="${mysql.autoCommitOnClose}" />
+		<property name="automaticTestTable" value="${mysql.automaticTestTable}" />
+		<property name="breakAfterAcquireFailure" value="${mysql.breakAfterAcquireFailure}" />
+		<property name="idleConnectionTestPeriod" value="${mysql.idleConnectionTestPeriod}" />
+		<property name="maxStatements" value="${mysql.maxStatements}" />
+		<property name="maxStatementsPerConnection" value="${mysql.maxStatementsPerConnection}" />
 	</bean>
+
+
+	<bean id="slave02Ds" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${slave02.mysql.url}" />
+		<property name="user" value="${slave02.mysql.username}" />
+		<property name="password" value="${slave02.mysql.password}" />
+		<property name="driverClass" value="${mysql.driver_class}" />
+		<property name="maxPoolSize" value="${mysql.maxPoolSize}" />
+		<property name="minPoolSize" value="${mysql.minPoolSize}" />
+		<property name="initialPoolSize" value="${mysql.initialPoolSize}" />
+		<property name="maxIdleTime" value="${mysql.maxIdleTime}" />
+		<property name="checkoutTimeout" value="${mysql.checkoutTimeout}" />
+		<property name="acquireIncrement" value="${mysql.acquireIncrement}" />
+		<property name="acquireRetryAttempts" value="${mysql.acquireRetryAttempts}" />
+		<property name="acquireRetryDelay" value="${mysql.acquireRetryDelay}" />
+		<property name="autoCommitOnClose" value="${mysql.autoCommitOnClose}" />
+		<property name="automaticTestTable" value="${mysql.automaticTestTable}" />
+		<property name="breakAfterAcquireFailure" value="${mysql.breakAfterAcquireFailure}" />
+		<property name="idleConnectionTestPeriod" value="${mysql.idleConnectionTestPeriod}" />
+		<property name="maxStatements" value="${mysql.maxStatements}" />
+		<property name="maxStatementsPerConnection" value="${mysql.maxStatementsPerConnection}" />
+	</bean>
+
+	<bean id="magicDataSource" class="pers.zr.opensource.magic.dao.MagicMultipleDataSource" >
+		<property name="master" ref="masterDs" />
+		<property name="slaves">
+			<map>
+				<entry key="slave01" value-ref="slave01Ds"  />
+				<entry key="slave02" value-ref="slave02Ds"  />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="queryDataSourceAop" class="pers.zr.opensource.magic.dao.runtime.RuntimeQueryDataSourceAop"></bean>
+	<aop:config>
+		<aop:aspect ref="queryDataSourceAop">
+			<aop:around method="determine"
+					pointcut="execution(* pers.zr.opensource.magic.conf.server.module.profile.service.impl.ProfileMgrServiceImpl.getProfileList(..))" />
+		</aop:aspect>
+	</aop:config>
 
 
 	<!-- Dao beans-->
